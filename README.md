@@ -1,4 +1,4 @@
-# Ehax-Project--1
+# Ehax-Project--1(In-Memory Database)
 ### My Experience While Working on the Project
 
 While working on this project, I had to study several important concepts in C, including **linked lists, file I/O operations, dynamic memory allocation, structures, and typedef**.
