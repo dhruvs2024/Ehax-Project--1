@@ -5,9 +5,9 @@ While doing this project, I had to study topics like linked lists, file I/O oper
 
 ### How the project works.
 
-set command adds the record to the DBMS with key and the value.#### 
-get function gets the value associated with that particular key.####
-Delete function deletes the record associated with that particular key.####
-Exists checks whether the record exists with such key.####
-Save function saves the data which was temporarily stored in volatile memory(RAM) in a file(Takes the name of file in which data is to be stored).####
-Load function extracts the data from a file and then stores it into the volatile memory of the computer(RAM).####
+set command adds the record to the DBMS with key and the value.<br>
+get function gets the value associated with that particular key.<br.
+Delete function deletes the record associated with that particular key.
+Exists checks whether the record exists with such key.
+Save function saves the data which was temporarily stored in volatile memory(RAM) in a file(Takes the name of file in which data is to be stored).
+Load function extracts the data from a file and then stores it into the volatile memory of the computer(RAM).
