@@ -22,7 +22,7 @@ void set(){
     node* pt = head;
     while(pt != NULL){
         if(strcmp(pt->key,key) == 0){
-            printf("Key should be unique.");      //Duplicate check.
+            printf("Key should be unique.\n");      //Duplicate check.
             return;
         }
         pt = pt->next;
@@ -35,7 +35,7 @@ void set(){
 
     new_node->next = head;
     head = new_node;
-    printf("Record added");
+    printf("Record added.\n");
     return;         
     }
 
@@ -98,7 +98,7 @@ void get(){
         }
         ptr = ptr->next;
     }
-    printf("Couldn't find a element with given key.");
+    printf("Couldn't find a element with given key.\n");
 
     return;
 }
@@ -158,7 +158,7 @@ int main(){
         }
         else if(strcmp("load",choice) == 0) load();
         else{
-            printf("Enter valid operation.");
+            printf("Enter valid operation.\n");
         }
 
         char y[5];
