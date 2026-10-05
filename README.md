@@ -1,4 +1,13 @@
 # Ehax-Project--1(In-Memory Database)
 ### My Experience While Working on the Project
 
-While doing this project, I had to study topics like linked lists, file I/O operations, dynamic memory allocation, structs and typedef. and one of the most troubling problem throughout this was the linked lists as it was completely new to me. I  choose this type of code style as normal as it is easier to just ask the user what he has to do and call the function i made for that operation. I also thought of trying to make it a replica of Redis and do exactly but it became too complicated for me and this would be more convenient for the user too. While writing the code the main problem i faced was the gets() one as it randomly gave segmentation faults(it you enter more than memory allotted to it, it takes the input but shows segmentation fault as so space is there to store it) so I rather used scanf and used "%8s" which only takes the first 8 characters of the index and 2nd was none other than linked lists as it was very new concept to me(had many logical confusions) then i slowly solved them as I continued through the code. and it was a nice experience doing my first project.
+While doing this project, I had to study topics like linked lists, file I/O operations, dynamic memory allocation, structs and typedef. and one of the most troubling problem throughout this was the linked lists as it was completely new to me.  While writing the code the main problem i faced was the gets() one as it randomly gave segmentation faults(it you enter more than memory allotted to it, it takes the input but shows segmentation fault as so space is there to store it) so I rather used scanf and used "%8s" which only takes the first 8 characters of the index and 2nd was none other than linked lists as it was very new concept to me(had many logical confusions) then i slowly solved them as I continued through the code. and it was a nice experience doing my first project.
+
+### How the project works.
+
+I have basically asked the user what function is to be performed and have taken inputs according to the user. I haven't made this exact replica i have kind of made it more beginner friendly the 'set' command adds the record to the DBMS with key and the value. 
+get function gets the value associated with that particular key.
+Delete function deletes the record associated with that particular key.
+Exists checks whether the record exists with such key.
+Save function saves the data which was temporarily stored in volatile memory(RAM) in a file(Takes the name of file in which data is to be stored).
+Load function extracts the data from a file and then stores it into the volatile memory of the computer(RAM).
