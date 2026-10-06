@@ -15,12 +15,15 @@ typedef struct Node node;
 
 node* head = NULL;
 
-void set(char* key,char* value){
+void set(char* key, char* value){
 
     node* pt = head;
     while(pt != NULL){
         if(strcmp(pt->key,key) == 0){
-            printf("Key should be unique.\n");      //Duplicate check.
+            // Update the value if the key already exists
+            strncpy(pt->value, value, 8);
+            pt->value[8] = '\0';
+            printf("OK \n");
             return;
         }
         pt = pt->next;
@@ -28,14 +31,17 @@ void set(char* key,char* value){
 
     node* new_node = (node*)malloc(sizeof(node));
 
-    strcpy(new_node->key, key);
-    strcpy(new_node->value, value);
+    // Using strncpy to prevent buffer overflows
+    strncpy(new_node->key, key, 8);
+    new_node->key[8] = '\0';
+    strncpy(new_node->value, value, 8);
+    new_node->value[8] = '\0';
 
     new_node->next = head;
     head = new_node;
     printf("OK \n");
     return;         
-    }
+}
 
 void save(char* filename){
 
@@ -59,7 +65,7 @@ void load(char* filename){
 
     FILE* ptr = fopen(filename,"r");
     if(ptr == NULL){
-        printf("Could not open file\n.");
+        printf("Could not open file.\n");
         return;
     }
 
@@ -86,7 +92,7 @@ void get(char* key){
         }
         ptr = ptr->next;
     }
-    printf("Couldn't find a record with given key.");
+    printf("Couldn't find a record with given key.\n");
 
     return;
 }
@@ -126,7 +132,7 @@ bool exists(char* key){
 }
 
 int main(){
-    load("data.txt");   // restore state from the last session, if any
+    load("data.txt");   
 
     while(true){
         char choice[25];
@@ -141,31 +147,47 @@ int main(){
         sscanf(choice, "%*s %44s", filename);   // separate parse, sized for filenames
 
         if(strcmp("SET",command) == 0){
-            if(n <3) printf("ERROR: usage: SET <KEY> <VALUE>");
-            else set(key,value);
+            if(n < 3){
+                printf("ERROR: usage: SET <KEY> <VALUE>\n");
+            } else {
+                set(key,value);
+            }
         }   
         else if(strcmp("GET",command) == 0){
-            if(n<2) printf("ERROR: usage: GET <KEY>");
-            else get(key);
+            if(n < 2){
+                printf("ERROR: usage: GET <KEY>\n");
+            } else {
+                get(key);
+            }    
         } 
         else if(strcmp("DEL",command) == 0){
-            if(n<2) printf("ERROR: usage: DEL <KEY>");
-            else del(key);
+            if(n < 2){
+                printf("ERROR: usage: DEL <KEY>\n");
+            } else {
+                del(key);
+            }
         }    
         else if(strcmp("EXISTS",command) == 0){
-            if(n<2) printf("ERROR: usage: EXISTS <KEY>");
-            else{
+            if(n < 2){ 
+                printf("ERROR: usage: EXISTS <KEY>\n");
+            } else {
                 if(exists(key)) printf("True\n");
                 else printf("False.\n");
             }
         }
         else if(strcmp("SAVE",command) == 0){
-            if(n<2) printf("ERROR: usage: SAVE <FILENAME>\n");
-            else save(filename);
+            if(n < 2){ 
+                printf("ERROR: usage: SAVE <FILENAME>\n");
+            } else {
+                save(filename);
+            }
         }
         else if(strcmp("LOAD",command) == 0){
-            if(n<2) printf("ERROR: usage: LOAD <FILENAME>\n");
-            else load(filename);
+            if(n < 2){
+                printf("ERROR: usage: LOAD <FILENAME>\n");
+            } else {
+                load(filename);
+            }
         }
         else{
             printf("Enter valid operation.\n");
