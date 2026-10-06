@@ -13,11 +13,7 @@ typedef struct Node node;
 
 node* head = NULL;
 
-void set(){
-    char key[9], value[9];
-
-    printf("Enter key and value: ");
-    scanf("%8s %8s", key,value);
+void set(char* key,char* value){
 
     node* pt = head;
     while(pt != NULL){
@@ -35,14 +31,11 @@ void set(){
 
     new_node->next = head;
     head = new_node;
-    printf("Record added.\n");
+    printf("OK \n");
     return;         
     }
 
-void save(){
-    char filename[45];
-    printf("Enter filename(should be less than 44 chars and file should exist): ");
-    scanf("%44s",filename);
+void save(char* filename){
 
     FILE* ptr = fopen(filename,"w");
     if(ptr == NULL) {
@@ -60,10 +53,7 @@ void save(){
     return;
 }
 
-void load(){
-    char filename[45];
-    printf("Enter filename: ");
-    scanf("%44s",filename);
+void load(char* filename){
 
     FILE* ptr = fopen(filename,"r");
     if(ptr == NULL){
@@ -79,34 +69,27 @@ void load(){
         nodes->next = head;
         head = nodes;
     }
-    fclose(ptr);
     printf("Loaded.\n");
-
+    fclose(ptr);
     return;
 }
 
-void get(){
-    char key[9];
-    printf("Enter the key of the record whose value you need: ");
-    scanf("%8s",key);
+void get(char* key){
 
     node* ptr = head;
     while(ptr != NULL){
         if(strcmp(ptr->key,key) == 0){
-            printf("The value is: %s\n",ptr->value);
+            printf("%s\n",ptr->value);
             return;
         }
         ptr = ptr->next;
     }
-    printf("Couldn't find a element with given key.\n");
+    printf("Couldn't find a record with given key.");
 
     return;
 }
 
-void del(){
-    char key[9];
-    printf("Enter the key of the record to be deleted: ");
-    scanf("%8s", key);
+void del(char* key){
 
     node* curr = head;   
     node* prev = NULL;   
@@ -117,21 +100,18 @@ void del(){
             else
                 prev->next = curr->next; 
             free(curr);                  
-            printf("Deleted.\n");
+            printf("OK\n");
             return;                       
         }
         prev = curr;      
         curr = curr->next; 
     }
-    printf("Couldn't find a element with given key.\n");
+    printf("Couldn't find a record with given key.\n");
 
     return;
 }
 
-bool exists(){
-    char key[9];
-    printf("Enter the key of the record to be searched: ");
-    scanf("%8s",key);
+bool exists(char* key){
 
     node* pt = head;
     while(pt != NULL){
@@ -144,32 +124,73 @@ bool exists(){
 }
 
 int main(){
+    load("data.txt");   // restore state from the last session, if any
+
     while(true){
         char choice[25];
         printf("Enter the operation: ");
-        scanf("%s",choice);
+        if(fgets(choice,sizeof(choice),stdin) == NULL) break;
+        char command[24];
+        char key[9];
+        char value[9];
+        char filename[45];
 
-        if(strcmp("set",choice) == 0) set();   
-        else if(strcmp("get",choice) == 0) get();
-        else if(strcmp("del",choice) == 0) del();
-        else if(strcmp("exists",choice) == 0){
-            if(exists()) printf("Record exists.\n");
-            else printf("Record doesn't exist with such key.\n");
+        int n = sscanf(choice, "%23s %8s %8s", command ,key, value);
+        sscanf(choice, "%*s %44s", filename);   // separate parse, sized for filenames
+
+        if(strcmp("SET",command) == 0){
+            if(n <3) printf("ERROR: usage: SET <KEY> <VALUE>");
+            else set(key,value);
+        }   
+        else if(strcmp("GET",command) == 0){
+            if(n<2) printf("ERROR: usage: GET <KEY>");
+            else get(key);
+        } 
+        else if(strcmp("DEL",command) == 0){
+            if(n<2) printf("ERROR: usage: DEL <KEY>");
+            else del(key);
+        }    
+        else if(strcmp("EXISTS",command) == 0){
+            if(n<2) printf("ERROR: usage: EXISTS <KEY>");
+            else{
+                if(exists(key)) printf("True\n");
+                else printf("False.\n");
+            }
         }
-        else if(strcmp("load",choice) == 0) load();
+        else if(strcmp("SAVE",command) == 0){
+            if(n<2) printf("ERROR: usage: SAVE <FILENAME>\n");
+            else save(filename);
+        }
+        else if(strcmp("LOAD",command) == 0){
+            if(n<2) printf("ERROR: usage: LOAD <FILENAME>\n");
+            else load(filename);
+        }
         else{
             printf("Enter valid operation.\n");
+            break;
         }
 
-        char y[5];
-        printf("Want to save or read the file's content?(else it will continue.).: ");
-        scanf("%4s",y);
-        if(strcmp("save",y) == 0) save();
-        if(strcmp("read",y) == 0) load();
+        char y[45];
+        char yfilename[45] = "";
+        char ycommand[45] = "";
+        printf("Want to save or load the file's content?(else it will continue.): ");
+        if(fgets(y,sizeof(y),stdin) == NULL) break;
+        y[strcspn(y,"\n")] = '\0';
+        int yn = sscanf(y, "%15s %44s", ycommand, yfilename);
+        if(strcmp("SAVE",ycommand) == 0) {
+            if(yn<2) printf("ERROR: usage: SAVE <FILENAME>");
+            else save(yfilename);
+        }    
+        if(strcmp("LOAD",ycommand) == 0){
+            if(yn<2) printf("ERROR: usage: LOAD <FILENAME>");
+            else load(yfilename);
+        }
         
         char x;
         printf("Want to continue(Y/N): ");
         scanf(" %c",&x);
+        int c;
+        while((c = getchar()) != '\n' && c != EOF);   // flush rest of the line
         if(x == 'N') break;
     }
 }
