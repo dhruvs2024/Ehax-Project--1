@@ -202,11 +202,11 @@ int main(){
         y[strcspn(y,"\n")] = '\0';
         int yn = sscanf(y, "%15s %44s", ycommand, yfilename);
         if(strcmp("SAVE",ycommand) == 0) {
-            if(yn<2) printf("ERROR: usage: SAVE <FILENAME>");
+            if(yn<2) printf("ERROR: usage: SAVE <FILENAME>\n");
             else save(yfilename);
         }    
         if(strcmp("LOAD",ycommand) == 0){
-            if(yn<2) printf("ERROR: usage: LOAD <FILENAME>");
+            if(yn<2) printf("ERROR: usage: LOAD <FILENAME>\n");
             else load(yfilename);
         }
         
